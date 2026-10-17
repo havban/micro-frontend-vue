@@ -4,14 +4,15 @@
     <img alt="Vue logo" src="./assets/logo.png">
     <router-view></router-view>
     <div
-      v-for="m in modules">
-      <script2 :src="m.src"/>
+      v-for="m in modules"
+      :key="m.src">
       <div id="app-collab"></div>
     </div>
   </div>
 </template>
 
 <script>
+import { loadScript } from '@/utils/loadScript'
 
 export default {
   name: 'app',
@@ -24,7 +25,11 @@ export default {
       ]
     }
   },
-  components: {
+  mounted () {
+    // Mount points exist now; load each micro-frontend bundle.
+    for (const m of this.modules) {
+      loadScript(m.src).catch((err) => console.warn(err.message))
+    }
   }
 }
 </script>

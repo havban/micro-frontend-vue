@@ -1,7 +1,4 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
+import { createStore } from 'vuex'
 
 const state = {
   user: {
@@ -24,15 +21,16 @@ const actions = {
 
 }
 
-const store = new Vuex.Store({
+const store = createStore({
   state,
   mutations,
   getters,
   actions
 })
 
-window.addStoreModule = function (module) {
-  store.addModule(module)
+// Lets micro-frontends register their own Vuex module on the shared store.
+window.addStoreModule = function (name, module) {
+  store.registerModule(name, module)
 }
 
 export default store
